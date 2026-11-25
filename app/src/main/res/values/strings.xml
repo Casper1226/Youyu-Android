@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">有余</string>
+    <style name="Theme.Youyu" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorAccent">#3973D9</item>
+    </style>
+</resources>
