@@ -7,6 +7,9 @@ debug_package="$public_package.debug"
 tools_dir="$ANDROID_HOME/build-tools/35.0.0"
 sample_gallery=build/public-gallery
 mkdir -p "$sample_gallery"
+adb shell wm size 1080x2160
+adb shell wm density 320
+adb shell settings put secure show_ime_with_hard_keyboard 0
 
 # The instrumentation target may have been removed after the connected tests.
 adb install -r app/build/outputs/apk/debug/app-debug.apk
@@ -19,8 +22,11 @@ for screen in home accounts account; do
   file "$sample_gallery/$screen.png" | grep -q 'PNG image data'
 done
 
-# Only this disposable emulator copy uses the runner's test key.
-"$tools_dir/apksigner" sign --ks "$HOME/.android/debug.keystore" --ks-pass pass:android \
+# This key signs only the throwaway copy installed for the release smoke test.
+test_key_dir=$(mktemp -d "$runner_tmp/youyu-smoke.XXXXXX")
+keytool -genkeypair -noprompt -storetype PKCS12 -keystore "$test_key_dir/smoke.p12" \
+  -storepass android -keypass android -alias smoke -keyalg RSA -keysize 2048 -validity 2 -dname 'CN=Youyu Emulator Test'
+"$tools_dir/apksigner" sign --ks "$test_key_dir/smoke.p12" --ks-pass pass:android \
   --out "$runner_tmp/youyu-emulator.apk" app/build/outputs/apk/release/app-release-unsigned.apk
 "$tools_dir/apksigner" verify "$runner_tmp/youyu-emulator.apk"
 adb install "$runner_tmp/youyu-emulator.apk"

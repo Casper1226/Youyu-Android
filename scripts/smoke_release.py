@@ -9,14 +9,14 @@ def adb(*args):
     return subprocess.check_output(["adb", "shell", *args], timeout=15).decode()
 
 
-def wait_for(label, predicate, timeout=45):
+def wait_for(label, predicate, count=1, timeout=45):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
             adb("uiautomator", "dump", "/data/local/tmp/youyu-release-check.xml")
             root = ET.fromstring(adb("cat", "/data/local/tmp/youyu-release-check.xml"))
             nodes = [node for node in root.iter("node") if predicate(node)]
-            if nodes:
+            if len(nodes) >= count:
                 return nodes
         except (ET.ParseError, subprocess.SubprocessError):
             pass
@@ -34,7 +34,7 @@ def tap(node):
 
 
 def enter_passphrase(index):
-    fields = wait_for("passphrase field", lambda n: n.get("class") == "android.widget.EditText")
+    fields = wait_for("passphrase field", lambda n: n.get("class") == "android.widget.EditText", index + 1)
     tap(fields[index])
     adb("input", "text", "synthetic-release-vault")
     # On a hardware-keyboard emulator there may be no soft keyboard to dismiss.
