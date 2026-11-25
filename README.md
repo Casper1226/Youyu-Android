@@ -4,6 +4,14 @@
 
 [下载 Android APK](https://github.com/Casper1226/Youyu-Android/releases/latest/download/Youyu-Android.apk) · [版本记录与 SHA-256 校验值](https://github.com/Casper1226/Youyu-Android/releases) · [反馈问题](https://github.com/Casper1226/Youyu-Android/issues)
 
+## 界面预览
+
+| 主页 | 资产 | 账户详情 |
+| --- | --- | --- |
+| <img src="docs/screens/home.png" width="240" alt="本周支出和最近三笔流水"> | <img src="docs/screens/accounts.png" width="240" alt="两张银行卡和一个微信零钱账户"> | <img src="docs/screens/account.png" width="240" alt="银行卡余额及该卡的消费记录"> |
+
+截图来自 Android 15 模拟器，账户、余额和流水均为演示数据。
+
 ## 第一次使用
 
 1. 在 Android 9 或更高版本的手机上安装 APK，设置至少 12 个字符的金库口令。
@@ -34,7 +42,7 @@
 
 `domain/` 包含金额、分类、账期和预算规则。`app/` 包含 Jetpack Compose 界面、Android Keystore 和 SQLCipher 持久化。测试使用独立的合成账本。调试包使用独立的应用 ID，可与公开版并存。
 
-[自动测试](https://github.com/Casper1226/Youyu-Android/actions/workflows/android.yml) · [第三方依赖说明](docs/third-party.md) · [机构图标来源](docs/institutions.md)
+[自动测试](https://github.com/Casper1226/Youyu-Android/actions/workflows/android.yml) · [构建和签名发布版本](docs/releasing.md) · [第三方依赖说明](docs/third-party.md) · [机构图标来源](docs/institutions.md)
 
 ## English
 
